@@ -1,0 +1,28 @@
+nelmio_api_doc:
+  areas:
+    path_patterns:
+      - ^/api(?!/doc$)
+
+  documentation:
+    servers:
+      - url: http://localhost:8000
+        description: API over HTTP
+      - url: https://localhost:8000
+        description: API over HTTPS
+    info:
+      title: JC PLATON COUTURE
+      description: L'application e-commerce
+      version: 1.0.0
+    components:
+      securitySchemes:
+        Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+    security:
+      - Bearer: [ ]
+
+  html_config:
+    swagger_ui_config:
+      displayRequestDuration: true
+      defaultModelsExpandDepth: 2

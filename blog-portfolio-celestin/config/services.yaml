@@ -1,0 +1,85 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+
+imports:
+    - { resource: 'parameters.yml' }
+
+parameters:
+    jwt_secret_key: '%env(JWT_SECRET_KEY)%'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $dureeVieToken: '%env(APP_DURE_VIE_TOKEN)%'
+            $nbMaxConnexionKo: 'env(APP_NB_MAX_CONNEXION_KO)'
+            $maxIdleTime: '%env(APP_SESSION_TIMEOUT)%'
+            $isSsoEnabled: '%env(bool:APP_SSO_ENABLED)%'
+        public: false
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    Doctrine\Migrations\Version\DbalMigrationFactory: ~
+    App\Migrations\Factory\MigrationFactoryDecorator:
+        decorates: Doctrine\Migrations\Version\DbalMigrationFactory
+        arguments: ['@App\Migrations\Factory\MigrationFactoryDecorator.inner', '@service_container']
+
+    App\Security\ChangePasswordAuthenticator:
+        arguments:
+            $userProvider: '@security.user.provider.concrete.database'
+    Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface: '@lexik_jwt_authentication.jwt_manager'
+
+    App\Service\PanierService:
+        arguments:
+            $requestStack: '@request_stack'  # Injecter le service RequestStack
+
+
+    App\Security\TokenAuthenticator:
+        arguments:
+            $jwtSecretKey: '%jwt_secret_key%'
+
+    # Configuration du cache pour les produits mobiles
+    cache.produits:
+        class: Symfony\Component\Cache\Adapter\FilesystemAdapter
+        arguments:
+            $namespace: 'produits_cache'
+            $defaultLifetime: 3600
+            $directory: '%kernel.cache_dir%/produits'
+
+    # Injection du cache dans le repository
+    App\Repository\ProduitRepository:
+        arguments:
+            $cache: '@cache.produits'
+
+    App\EventListener\LocaleListener:
+        arguments:
+            $defaultLocale: 'fr'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+
+    App\Service\ImageCacheService:
+        arguments:
+            $uploadDir: '%kernel.project_dir%/public/uploads'
+
+    App\EventListener\StockUpdatedListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'product.stock_updated', method: 'onStockUpdated' }
+
+    App\Service\FileUploader:
+        arguments:
+            $targetDirectory: '%images_directory%'

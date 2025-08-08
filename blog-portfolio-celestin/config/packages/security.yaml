@@ -1,0 +1,40 @@
+security:
+  providers:
+    database:
+      entity:
+        class: App\Entity\User
+        property: email
+
+  password_hashers:
+    App\Entity\Utilisateur:
+      algorithm: auto
+
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+    login:
+      pattern: ^/api/login
+      stateless: true
+      json_login:
+        check_path: /api/login
+        username_path: email
+        password_path: password
+        success_handler: lexik_jwt_authentication.handler.authentication_success
+        failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+    api:
+      pattern: ^/api
+      stateless: true
+      jwt: ~
+
+  access_control:
+    - { path: ^/api/produit_creer_admin, roles: ROLE_ADMIN_VIP }
+    - { path: ^/api/consulter_profile, roles: ROLE_ADMIN_VIP }
+    - { path: ^/api/produits_admin, roles: ROLE_ADMIN_VIP }
+    - { path: ^/api/panier/finaliser, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/contact, roles: PUBLIC_ACCESS }
+    - { path: ^/api/produits_users, roles: PUBLIC_ACCESS }
+    - { path: ^/api/login, roles: PUBLIC_ACCESS }
+    - { path: ^/api, roles: PUBLIC_ACCESS }

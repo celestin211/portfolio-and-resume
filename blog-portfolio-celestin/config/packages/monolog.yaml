@@ -1,0 +1,35 @@
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: critical
+            handler:      deduplicated
+            excluded_http_codes: [404, 405]
+        deduplicated:
+            type:    deduplication
+            handler: symfony_mailer
+        symfony_mailer:
+            type:       symfony_mailer
+            from_email: 'ne-pas-repondre@brillonettoyage.fr'
+            to_email:   ['simlachoytun@yahoo.fr', 'celestin.mombela@yahoo.fr']
+            subject:    'ERREUR bac.app_name sur app.environnement'
+            level:      info
+            formatter:          monolog.formatter.html
+            content_type:       text/html
+        main_error:
+            type:         fingers_crossed
+            action_level: error
+            handler:      streamed
+        streamed:
+            type:  stream
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+        login:
+            type:     stream
+            path:     "%kernel.logs_dir%/auth.log"
+            level:    info
+            channels: security
+        console:
+            type: console
+            process_psr_3_messages: false
+            channels: [ '!event', '!doctrine', '!console' ]

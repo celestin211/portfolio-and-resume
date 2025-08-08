@@ -1,0 +1,16 @@
+twig:
+    form_themes: ['bootstrap_3_layout.html.twig']
+    exception_controller: null
+    globals:
+        app_name: 'bac.app_name'
+        app_ville: 'bac.app_ville'
+        app_telephone: 'bac.app_telephone'
+        app_adresse: 'bac.app_adresse'
+        version: 'bac.app_version'
+        menu_listener: '@App\EventListener\MenuListener'
+        message_manager: '@App\Service\MessageManager'
+        absolute_url: 'bac.absolute_url'
+        ssoEnabled: "%env(bool:APP_SSO_ENABLED)%"
+    default_path: '%kernel.project_dir%/templates'
+    strict_variables:  true
+

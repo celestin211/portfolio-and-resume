@@ -1,0 +1,67 @@
+# This file is auto-generated during the composer install
+parameters:
+    app.app_name: Brillonettoyage
+    app.app_adresse: 3 rue Paul Angel
+    app.app_telephone: 06 25 89 57 89
+    app.app_ville: Villier-sur-Marne
+    locale: fr
+    kernel.root_dir: '%kernel.project_dir%'
+    mailer.from_address: ne-pas-repondre@brillonettoyage.fr
+    mailer.from_name: Adminstrateur Brillonettoyage
+    mailer.reply_address: ne-pas-repondre@brillonettoyage.fr
+    # Durée en secondes pendant laquelle le navigateur garde la session si la case "Se souvenir de moi" a été cochée par l'utilisateur
+    # 2592000 = 30 jours en secondes (garde la session ouverte meme après fermeture du navigateur)
+    bac.se.souvenir.de.moi: '%env(int:APP_REMEBERME_LIFETIME)%'
+    bac.company_name: 'Brillonettoyage'
+    bac.app_name: 'Brillonettoyage'
+    bac.app_ville: 'AlfortVille'
+    bac.app_adresse: '3 rue Marcel Bourdarias'
+    bac.app_telephone: '06 25 78 98 96'
+    app.environnement: '%env(APP_ENVIRONNEMENT)%'
+    bac.app_version: 3.1.5
+    bac.maquette.nbLignesMax: 10000
+    bac.autocomplete: '%env(APP_AUTOCOMPLETE)%'
+    bac.absolute_url : '%env(APP_ABSOLUTE_URL)%'
+    bac.errors.subject: 'Brillonettoyage : erreur sur %env(APP_ENVIRONNEMENT)% '
+    bac.errors.to_email: ['simlachoytun@yahoo.fr', 'celestin.mombela@yahoo.fr']
+    bac.defaultPassword: brillonettoyage
+    bac.matomo_site_id: '%env(MATOMO_SITE_ID)%'
+    app.sso.enabled: '%env(bool:APP_SSO_ENABLED)%'
+    app.sso.url_home: '%env(APP_SSO_URL_HOME)%'
+    images_directory: '%kernel.project_dir%/public/uploads/images'
+    dialogflow_url: 'https://dialogflow.googleapis.com/v2/projects/your_project_id/agent/sessions/session_id:detectIntent'
+    dialogflow_token: 'your_dialogflow_auth_token'
+    product_images_directory: '%kernel.project_dir%/public/uploads/images'
+
+
+
+
+    # Taille maximale des pièces jointes chargées dans l'application (en kiloOctets), si l'on modifie ce parametre il faut modifier la valeur dans l'assert de l'entité document (valeur actuelle = 5M)
+    bac.max_file_size: 5120
+
+    # bac.maquette.arretSurErreur = true => sort à la première erreur rencontrée
+    # bac.maquette.arretSurErreur = false => continue à lire le reste du fichier même s'il rencotre des erreurs
+    bac.maquette.arretSurErreur: false
+
+    # Liste des Expressions Reguliers de validation de contenu dans les maquettes
+
+    bac.regex.excelRegex: /^.{0,1024}$/s
+
+    # Elements composants des clés des Entites Ligne et Agent utilisés pour le controle de doublons
+    bac.controle.clePrimaire:
+        0: Prenom
+        1: NomNaissance
+        2: DateNaissance
+    # Treshold pour la fonction levenshtein des comparaisons
+    bac.controle.treshold: 0
+
+    # templates word
+    bac.docs.templates: '%kernel.root_dir%/templates/'
+    bac.docs.targetDir: '%kernel.root_dir%/public/uploads/data/generatedFiles/'
+    bac.docs.tmpDir: '%kernel.root_dir%/public/uploads/data/tmp/'
+
+    bac.docs.excelType: "Xls"
+
+    # Pagination dans la messagerie
+    bac.messagerie.nombreDeMessageParPage: 12
+
